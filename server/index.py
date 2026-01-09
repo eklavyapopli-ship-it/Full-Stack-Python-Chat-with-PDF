@@ -3,6 +3,7 @@ from typing import Annotated
 from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
 from worker import process
+from rqClient.rq_client import queue
 
 origins = ["http://localhost:3000"]  # Next.js frontend
 
@@ -26,8 +27,8 @@ async def uploadfile(file: UploadFile):
         file_path = f"server/uploads/{file.filename}"
         with open(file_path, "wb") as f:
             f.write(file.file.read())
-            z=process(x=file.filename)
-            return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","workSuccess":z}
+            job = queue.enqueue(process,file)
+            return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
         
     except Exception as e:
         return {"message": e.args}

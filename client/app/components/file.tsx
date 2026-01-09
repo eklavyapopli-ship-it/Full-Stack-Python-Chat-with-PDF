@@ -9,6 +9,7 @@ interface ResMes {
   message?: string;
   path?:string;
   workSuccess: PDFChunk[];
+  job:string
 }
 
 const FileUploadPage = () => {
@@ -78,9 +79,10 @@ const FileUploadPage = () => {
   <div className="bg-slate-800 p-2 rounded">
     {response.message && <p>{response.message}</p>}
     {response.path && <p>{response.path}</p>}
-    {response.workSuccess.map((item, index) => (
+    {/* {response.workSuccess.map((item, index) => (
       <p key={index} className="mb-2">{item.content}</p>
-    ))}
+    ))} */}
+    {response.job && <p>{response.job}</p>}
   </div>
       )}
     </div>
