@@ -1,6 +1,8 @@
 from fastapi import FastAPI, File, UploadFile
 from typing import Annotated
+from pathlib import Path
 from fastapi.middleware.cors import CORSMiddleware
+from worker import process
 
 origins = ["http://localhost:3000"]  # Next.js frontend
 
@@ -24,6 +26,8 @@ async def uploadfile(file: UploadFile):
         file_path = f"server/uploads/{file.filename}"
         with open(file_path, "wb") as f:
             f.write(file.file.read())
-            return {"message": "File saved successfully"}
+            z=process(x=file.filename)
+            return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","workSuccess":z}
+        
     except Exception as e:
         return {"message": e.args}

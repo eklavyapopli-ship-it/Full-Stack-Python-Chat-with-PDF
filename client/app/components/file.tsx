@@ -2,8 +2,13 @@
 
 import React, { useRef, useState } from 'react';
 import { Upload } from 'lucide-react';
+interface PDFChunk {
+  content: string;
+}
 interface ResMes {
   message?: string;
+  path?:string;
+  workSuccess: PDFChunk[];
 }
 
 const FileUploadPage = () => {
@@ -72,6 +77,10 @@ const FileUploadPage = () => {
       {response && (
   <div className="bg-slate-800 p-2 rounded">
     {response.message && <p>{response.message}</p>}
+    {response.path && <p>{response.path}</p>}
+    {response.workSuccess.map((item, index) => (
+      <p key={index} className="mb-2">{item.content}</p>
+    ))}
   </div>
       )}
     </div>
