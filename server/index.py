@@ -1,6 +1,8 @@
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, Query
 from typing import Annotated
 from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 from fastapi.middleware.cors import CORSMiddleware
 from worker import process
 from rqClient.rq_client import queue
@@ -27,8 +29,16 @@ async def uploadfile(file: UploadFile):
         file_path = f"server/uploads/{file.filename}"
         with open(file_path, "wb") as f:
             f.write(file.file.read())
-            job = queue.enqueue(process,file)
-            return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
+            if(f.name):
+                job = queue.enqueue(process,file.filename)
+                return {"message": "File saved successfully", "path": f"/uploads/{file.filename}","job":job.id}
         
     except Exception as e:
         return {"message": e.args}
+@app.get("/job-status")
+def getResult( job_id: str = Query(...,description="Job ID")
+):
+    
+    job = queue.fetch_job(job_id=job_id)
+    resut = job.result
+    return{"result": resut}
