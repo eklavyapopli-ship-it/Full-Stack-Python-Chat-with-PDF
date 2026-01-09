@@ -2,6 +2,7 @@ from fastapi import FastAPI, File, UploadFile, Query
 from typing import Annotated
 from pathlib import Path
 from dotenv import load_dotenv
+from retrieval.ret import reply
 load_dotenv()
 from fastapi.middleware.cors import CORSMiddleware
 from worker import process
@@ -42,3 +43,8 @@ def getResult( job_id: str = Query(...,description="Job ID")
     job = queue.fetch_job(job_id=job_id)
     resut = job.result
     return{"result": resut}
+
+@app.get("/chat")
+def getReply(mess:str = Query(...,description="user message")):
+    k = reply(mess)
+    return {"ans":k}
