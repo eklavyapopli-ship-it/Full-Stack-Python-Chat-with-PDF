@@ -37,8 +37,8 @@ export default function ChatPage() {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white flex items-center justify-center">
-      <div className="w-full max-w-3xl p-6 space-y-6 border border-gray-700 rounded-xl">
+    <main className="min-h-screen  text-white flex items-center justify-center">
+      <div className="w-full bg-black max-w-3xl p-6 space-y-6 border border-gray-700 rounded-xl">
         <h1 className="text-2xl font-bold text-center">
           PDF Chat Assistant
         </h1>
@@ -47,7 +47,7 @@ export default function ChatPage() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           placeholder="Ask a question from the PDF..."
-          className="w-full h-32 p-3 bg-gray-900 border border-gray-700 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-32 p-3 bg-white text-black border border-gray-700 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button
